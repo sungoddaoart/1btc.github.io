@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple and effective converter for converting Satoshi to USD and Bitcoin. Learn about the smallest unit of Bitcoin, Satoshi.">
+    <title>how many satoshis add up to 1 btc</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #ff9900, #ffcc66);
+        }
+        
+        header {
+            background: #cc7a00;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            flex: 1;
+            /* 允许内容部分扩展以填充剩余空间 */
+        }
+        
+        footer {
+            background: #ff9900;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        #language-buttons {
+            margin-bottom: 20px;
+        }
+        
+        .language-button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff9900;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .language-button:hover {
+            background-color: #cc7a00;
+        }
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        
+        .input-container img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        #conversion-note {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>how many satoshis add up to 1 btc</h1>
+    </header>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols": [{
+                    "proName": "BITSTAMP:BTCUSD",
+                    "title": "Bitcoin"
+                }, {
+                    "proName": "BITSTAMP:ETHUSD",
+                    "title": "Ethereum"
+                }, {
+                    "description": "PEOPLE",
+                    "proName": "BINANCE:PEOPLEUSDT.P"
+                }, {
+                    "description": "DOG",
+                    "proName": "GATEIO:DOGUSDT"
+                }, {
+                    "description": "PEPE",
+                    "proName": "BINANCE:PEPEUSDT"
+                }, {
+                    "description": "SHIB",
+                    "proName": "BINANCE:SHIBUSDT"
+                }],
+                "showSymbolLogo": true,
+                "isTransparent": false,
+                "displayMode": "adaptive",
+                "colorTheme": "dark",
+                "locale": "en"
+            }
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+
+    <div class="container">
+        <div id="language-buttons">
+            <button class="language-button" onclick="changeLanguage('en')">English</button>
+            <button class="language-button" onclick="changeLanguage('es')">Español</button>
+            <button class="language-button" onclick="changeLanguage('ja')">日本語</button>
+            <button class="language-button" onclick="changeLanguage('ko')">한국어</button>
+            <button class="language-button" onclick="changeLanguage('zh-CN')">简体中文</button>
+            <button class="language-button" onclick="changeLanguage('zh-TW')">繁體中文</button>
+            <button class="language-button" onclick="changeLanguage('fr')">Français</button>
+            <button class="language-button" onclick="changeLanguage('de')">Deutsch</button>
+        </div>
+
+        <div class="input-container">
+            <input type="number" id="usd-input" placeholder="Enter USD" oninput="convertFromUSD()">
+            <img src="usd.svg" alt="USD">
+        </div>
+
+        <div class="input-container">
+            <input type="number" id="btc-input" placeholder="Enter Bitcoin" oninput="convertFromBTC()">
+            <img src="btc.svg" alt="BTC">
+        </div>
+
+        <div class="input-container">
+            <input type="number" id="satoshi-input" placeholder="Enter Satoshi" oninput="convertFromSatoshi()">
+            <img src="sats.svg" alt="Satoshi">
+        </div>
+
+        <div id="result"></div>
+
+        <div id="conversion-note">1 Bitcoin = 100,000,000 Satoshis</div>
+
+        <div id="details">
+            <h2 id="details-title">What is Satoshi?</h2>
+            <p id="details-description">Satoshi is the smallest unit of Bitcoin, named after its creator, Satoshi Nakamoto.</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="links"></div>
+        <a href="#"></a>
+        </div>
+        <p>&copy; 2024 Satoshi Converter. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let exchangeRate;
+
+        async function fetchExchangeRate() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                exchangeRate = data.bitcoin.usd;
+                enableInputs();
+            } catch (error) {
+                console.error('Error fetching exchange rate:', error);
+            }
+        }
+
+        function enableInputs() {
+            document.getElementById('usd-input').disabled = false;
+            document.getElementById('btc-input').disabled = false;
+            document.getElementById('satoshi-input').disabled = false;
+        }
+
+        function convertFromUSD() {
+            const usd = parseFloat(document.getElementById('usd-input').value);
+            if (isNaN(usd) || usd < 0) return;
+            const btc = (usd / exchangeRate).toFixed(8);
+            const satoshi = (btc * 100000000).toFixed(0);
+            document.getElementById('btc-input').value = btc;
+            document.getElementById('satoshi-input').value = satoshi;
+        }
+
+        function convertFromBTC() {
+            const btc = parseFloat(document.getElementById('btc-input').value);
+            if (isNaN(btc) || btc < 0) return;
+            const usd = (btc * exchangeRate).toFixed(2);
+            const satoshi = (btc * 100000000).toFixed(0);
+            document.getElementById('usd-input').value = usd;
+            document.getElementById('satoshi-input').value = satoshi;
+        }
+
+        function convertFromSatoshi() {
+            const satoshi = parseInt(document.getElementById('satoshi-input').value);
+            if (isNaN(satoshi) || satoshi < 0) return;
+            const btc = (satoshi / 100000000).toFixed(8);
+            const usd = (btc * exchangeRate).toFixed(2);
+            document.getElementById('usd-input').value = usd;
+            document.getElementById('btc-input').value = btc;
+        }
+
+        function changeLanguage(lang) {
+            const translations = {
+                en: {
+                    title: "What is Satoshi?",
+                    description: "Satoshi is the smallest unit of Bitcoin, named after its creator, Satoshi Nakamoto."
+                },
+                es: {
+                    title: "¿Qué es Satoshi?",
+                    description: "Satoshi es la unidad más pequeña de Bitcoin, nombrada así por su creador, Satoshi Nakamoto."
+                },
+                ja: {
+                    title: "サトシとは何ですか？",
+                    description: "サトシはビットコインの最小単位であり、その創造者サトシ・ナカモトにちなんで名付けられました。"
+                },
+                ko: {
+                    title: "사토시란 무엇인가요?",
+                    description: "사토시는 비트코인의 가장 작은 단위로, 그 창시자인 사토시 나카모토의 이름을 따서 명명되었습니다."
+                },
+                "zh-CN": {
+                    title: "什么是 Satoshi？",
+                    description: "Satoshi 是比特币的最小单位，命名于其创造者中本聪。"
+                },
+                "zh-TW": {
+                    title: "什麼是 Satoshi？",
+                    description: "Satoshi 是比特幣的最小單位，命名於其創造者中本聰。"
+                },
+                fr: {
+                    title: "Qu'est-ce que Satoshi ?",
+                    description: "Satoshi est la plus petite unité de Bitcoin, nommée d'après son créateur, Satoshi Nakamoto."
+                },
+                de: {
+                    title: "Was ist Satoshi?",
+                    description: "Satoshi ist die kleinste Einheit von Bitcoin, benannt nach seinem Schöpfer, Satoshi Nakamoto."
+                }
+            };
+            document.getElementById('details-title').innerText = translations[lang].title;
+            document.getElementById('details-description').innerText = translations[lang].description;
+        }
+
+        fetchExchangeRate();
+    </script>
+</body>
+
+</html>
